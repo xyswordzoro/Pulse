@@ -1,0 +1,430 @@
+/* ======================================================================
+   Windows XP (Luna) theme (html.xp) — second retro skin, sharing the
+   .w98-chrome markup with the Win98 theme (styles/win98.css). The navbar
+   button cycles default → win98 → xp; the choice persists in
+   localStorage("preferred-ui"). Imported after win98.css so html.xp wins
+   the shared-chrome conflicts.
+   ====================================================================== */
+
+html.xp {
+  --xp-panel: #ece9d8;
+  --xp-panel-dark: #dbd6c3;
+  --xp-panel-line: #d0ccb8;
+  --xp-blue: #0054e3;
+  --xp-blue-mid: #2b6ce6;
+  --xp-blue-badge: #388e3c;
+  --xp-inset: #7f9db9;
+  --xp-select: #316ac5;
+  --xp-titlebar: linear-gradient(to bottom, #0058e6 0%, #2576f8 12%, #0055ea 40%, #0043bd 70%, #0038a8 100%);
+  --xp-taskbar: linear-gradient(to bottom, #1f72ed 0%, #175ec2 12%, #0e48a1 50%, #1555b7 100%);
+  --xp-start: linear-gradient(to bottom, #388e3c 0%, #4caf50 20%, #2e7d32 80%, #1b5e20 100%);
+  --xp-tray: linear-gradient(to bottom, #09acec 0%, #078bd4 100%);
+  color-scheme: light;
+  font-size: 13px;
+}
+
+/* ---------- base: Bliss wallpaper, panel window ---------- */
+html.xp body {
+  /* A CSS-painted Bliss: sky fading into rolling green hills (no external
+     image, works offline). */
+  background:
+    radial-gradient(120% 38% at 50% 78%, #7cb342 0%, #558b2f 55%, rgba(85, 139, 47, 0) 100%),
+    radial-gradient(140% 30% at 30% 66%, #8bc34a 0%, rgba(139, 195, 74, 0) 100%),
+    linear-gradient(180deg,
+      #5a8fd8 0%, #7db4e8 14%, #a9d0f0 28%, #d6e9f7 40%,
+      #c8dded 46%, #9ccb63 54%, #5ba332 72%, #3e7c1f 100%) !important;
+  background-attachment: fixed !important;
+  color: #000;
+  font-family: Tahoma, 'Segoe UI', 'Microsoft YaHei', sans-serif !important;
+  font-size: 13px;
+  padding-bottom: 44px;
+}
+
+/* The whole dashboard becomes one XP window floating on the wallpaper. */
+html.xp #auth-check {
+  min-height: calc(100vh - 56px);
+  max-width: 1220px;
+  margin: 10px auto 46px;
+  background: var(--xp-panel) !important;
+  border: 3px solid var(--xp-blue);
+  border-radius: 8px 8px 4px 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Chrome ships hidden; XP shows it (same markup as the 98 theme). */
+.w98-chrome { display: none !important; }
+html.xp .w98-chrome { display: flex !important; }
+html.xp .w98-chrome.w98-startmenu { display: none !important; }
+html.xp .w98-chrome.w98-startmenu.is-open { display: flex !important; }
+
+/* ---------- title bar (Luna blue) ---------- */
+html.xp .w98-titlebar {
+  height: 30px;
+  padding: 0 5px 0 8px;
+  background: var(--xp-titlebar);
+  border-radius: 5px 5px 0 0;
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+}
+html.xp .w98-titlebar .w98-tbtn {
+  width: 21px; height: 21px;
+  border-radius: 3px;
+  border: 1px solid #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(to bottom, #4d8ef0 0%, #2b64d8 50%, #1c4bb0 100%);
+  color: #fff; font-size: 11px;
+}
+html.xp .w98-titlebar .w98-tbtn:active { filter: brightness(0.85); }
+html.xp .w98-titlebar .w98-tbtn:last-child {
+  background: linear-gradient(to bottom, #e1674e 0%, #d83d1c 45%, #b41a00 55%, #e14e2e 100%);
+}
+html.xp .w98-titlebar .w98-tbtn:last-child:hover { filter: brightness(1.1); }
+
+/* XP explorer has no menu strip under the title bar. */
+html.xp .w98-menubar { display: none !important; }
+
+/* ---------- navbar strip: plain panel under the title bar ---------- */
+html.xp .glass-nav {
+  margin: 0 !important;
+  max-width: none !important;
+  height: 40px !important;
+  padding: 0 8px !important;
+  background: var(--xp-panel) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+html.xp .glass-nav a,
+html.xp .glass-nav button { color: #000; }
+html.xp .glass-nav button:hover,
+html.xp .glass-nav a:hover { background: rgba(255, 255, 255, 0.75) !important; }
+html.xp .glass-nav #navbar-text { color: #000 !important; font-size: 13px; }
+html.xp .glass-nav #navbar-logo-container img,
+html.xp .glass-nav #navbar-logo-container svg {
+  width: 24px !important; height: 24px !important;
+  max-width: 24px !important; max-height: 24px !important;
+  object-fit: contain !important;
+}
+html.xp #win98-btn[aria-pressed='true'] {
+  background: #fff !important;
+  border-radius: 3px !important;
+}
+
+/* ---------- main card: transparent on the panel ---------- */
+html.xp #monitor-root {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  max-width: none !important;
+  padding: 6px 8px !important;
+}
+
+/* header above the list */
+html.xp #all-systems-title { color: var(--xp-blue) !important; font-size: 15px !important; font-weight: bold; }
+html.xp #all-systems-desc { color: #5c5c5c !important; font-size: 11px; }
+html.xp #systems-summary > span {
+  border-radius: 3px !important;
+  background: var(--xp-blue-mid) !important;
+  color: #fff !important;
+  font-size: 11px; padding: 1px 6px; margin-left: 6px;
+}
+html.xp #systems-summary > span:nth-child(2) { background: var(--xp-blue-badge) !important; }
+html.xp #systems-summary > span .h-1\.5 { background: #fff !important; }
+
+/* toolbar controls */
+html.xp .toolbar-control {
+  height: 26px !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  color: #000 !important;
+  font-size: 12px;
+  border: 1px solid var(--xp-inset) !important;
+  box-shadow: none !important;
+}
+html.xp .toolbar-control::placeholder { color: #808080 !important; }
+html.xp #system-filter-kbd { display: none !important; }
+html.xp .toolbar-icon-btn,
+html.xp .toolbar-btn {
+  height: 26px !important; border-radius: 3px !important;
+  background: var(--xp-panel) !important; color: #000 !important;
+  border: 1px solid var(--xp-inset) !important; box-shadow: none !important;
+}
+html.xp .toolbar-icon-btn:hover,
+html.xp .toolbar-btn:hover { background: #fff !important; }
+
+/* 资源 | 延迟 switch */
+html.xp .list-view-tab,
+html.xp .chart-tab {
+  border-radius: 3px !important;
+  background: var(--xp-panel) !important; color: #000 !important;
+  font-size: 11px; padding: 3px 10px;
+  border: 1px solid var(--xp-inset) !important; box-shadow: none !important;
+}
+html.xp .list-view-tab[aria-selected='true'],
+html.xp .chart-tab[aria-selected='true'] {
+  background: #fff !important; font-weight: bold;
+}
+
+/* view menu */
+html.xp .view-menu {
+  border-radius: 3px !important;
+  background: #fff !important; color: #000;
+  border: 1px solid var(--xp-inset) !important;
+  box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.25) !important;
+}
+html.xp .view-menu-item { border-radius: 2px !important; color: #000 !important; font-size: 12px; }
+html.xp .view-menu-item:hover,
+html.xp .view-menu-item:focus-visible { background: var(--xp-select) !important; color: #fff !important; }
+html.xp .view-menu-item svg { color: inherit !important; }
+html.xp .view-menu-label { color: #5c5c5c; }
+
+/* ---------- table ---------- */
+/* Luna header: white → panel → beige vertical gradient, hairline column
+   separators; pressed state darkens the gradient. */
+html.xp #system-table-header-row {
+  background: transparent !important;
+  color: #000 !important;
+  border: 0 !important;
+  gap: 0 !important;
+  padding: 0 !important;
+}
+html.xp #system-table-header-row > div {
+  border: 0;
+  border-right: 1px solid #b2b2b2;
+  border-bottom: 1px solid #b2b2b2;
+  background: linear-gradient(to bottom, #ffffff 0%, var(--xp-panel) 50%, var(--xp-panel-dark) 100%) !important;
+  padding: 4px 8px !important;
+}
+html.xp #system-table-header-row > div:last-child { border-right: 0; }
+html.xp #system-table-header-row > div:active,
+html.xp #system-table-header-row > div:has(> .sort-header:active) {
+  background: linear-gradient(to bottom, var(--xp-panel-dark) 0%, var(--xp-panel) 100%) !important;
+}
+html.xp #system-table-header-row .sort-header { color: #000 !important; font-weight: normal; gap: 3px; }
+html.xp #system-table-header-row .sort-header:hover { text-decoration: underline; }
+html.xp #system-table-header-row .sort-header:focus-visible { outline: 1px dotted #000; box-shadow: none; }
+html.xp #system-table-header-row .sort-header-arrow { border-color: transparent; }
+
+/* rows: white with zebra stripes and soft hover, XP selection blue */
+html.xp #systems-body > .system-row > [data-system-id] {
+  background: #fff !important;
+  color: #000;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+html.xp #systems-body > .system-row:nth-child(even) > [data-system-id] { background: #f8f8f6 !important; }
+html.xp #systems-body > .system-row > [data-system-id]:hover { background: #e3efe8 !important; }
+html.xp #systems-body > .system-row > [data-system-id][aria-expanded='true'],
+html.xp #systems-body > .system-row > [data-system-id][aria-expanded='true']:hover {
+  background: var(--xp-select) !important;
+  color: #fff;
+}
+html.xp #systems-body .system-row .row-name,
+html.xp #systems-body .system-row .cell-location,
+html.xp #systems-body .system-row .cell-net,
+html.xp #systems-body .system-row .cell-uptime,
+html.xp #systems-body .system-row .cell-os {
+  color: inherit !important;
+}
+html.xp #systems-body .system-row .copy-btn { color: inherit !important; }
+html.xp #systems-body .system-row > [data-system-id] span:not(.status-dot):not(.status-chip) {
+  color: inherit !important;
+}
+html.xp #systems-body > .system-row > [data-system-id] > div { padding-left: 8px !important; }
+
+/* status dot keeps its colour; soft round LED */
+html.xp .status-dot { box-shadow: 0 0 2px rgba(0, 0, 0, 0.35); }
+
+/* progress bars: XP fills — a white gloss over whatever green/amber/red
+   level colour the row carries, inside a #7f9db9 inset track */
+html.xp #monitor-root .progress-track {
+  height: 13px !important;
+  border-radius: 2px !important;
+  background: #fff !important;
+  border: 1px solid var(--xp-inset) !important;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.12) !important;
+}
+html.xp #monitor-root .progress-track > div {
+  border-radius: 1px;
+  background-image: linear-gradient(to bottom,
+    rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.15) 45%,
+    rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.22) 100%) !important;
+}
+
+/* the location cell keeps the little box, XP-blue border */
+html.xp #monitor-root .cell-location {
+  border: 1px solid var(--xp-inset);
+  border-radius: 2px;
+  background: #fff;
+  padding: 0 5px !important;
+  height: 18px !important;
+  width: max-content !important;
+  max-width: calc(100% - 6px);
+  overflow: hidden;
+  justify-self: start;
+}
+
+/* ---------- details (expanded panel) ---------- */
+html.xp .system-details {
+  background: var(--xp-panel) !important;
+  border-color: var(--xp-panel-line) !important;
+  color: #000;
+}
+html.xp #monitor-root .detail-label,
+html.xp #monitor-root .detail-value,
+html.xp #monitor-root .detail-icon,
+html.xp #monitor-root .resource-card-title,
+html.xp #monitor-root .resource-card-desc,
+html.xp #monitor-root [data-pane-desc],
+html.xp #monitor-root [data-chart-tabs] button {
+  color: #000 !important;
+}
+html.xp #monitor-root .resource-card {
+  background: #fff !important;
+  border: 1px solid var(--xp-inset) !important;
+  border-radius: 3px !important;
+}
+html.xp [data-tcping-chart-container] > div {
+  border-radius: 3px !important;
+  background: #fff !important;
+  border: 1px solid var(--xp-inset) !important;
+  box-shadow: none !important;
+}
+
+/* ---------- pagination ---------- */
+html.xp #systems-pagination { color: #000; font-size: 12px; }
+html.xp #systems-pagination .pagination-btn {
+  border-radius: 3px !important; color: #000 !important;
+  background: var(--xp-panel) !important; height: 22px; width: 26px;
+  border: 1px solid var(--xp-inset) !important; box-shadow: none !important;
+}
+html.xp #systems-pagination .pagination-btn:disabled { opacity: 0.5; }
+
+/* ---------- footer strip ---------- */
+html.xp #page-footer { color: #4a4a3a; font-size: 11px; }
+html.xp #page-footer a { color: var(--xp-blue); }
+
+/* ---------- status bar ---------- */
+html.xp .w98-statusbar {
+  gap: 3px; padding: 4px 8px;
+  background: var(--xp-panel);
+  border-top: 1px solid var(--xp-panel-line);
+  border-radius: 0 0 3px 3px;
+  font-size: 11px; color: #3a3a30;
+  max-width: none; margin: 0;
+}
+html.xp .w98-statusbar > span {
+  padding: 2px 8px; background: #fff;
+  border: 1px solid var(--xp-inset); border-radius: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  box-shadow: none;
+}
+html.xp .w98-statusbar .grow { flex: 1 1 auto; border: 0 !important; background: transparent !important; }
+html.xp .w98-statusbar .w98-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: #00d000; box-shadow: 0 0 3px #00d000;
+  vertical-align: middle; margin-right: 4px;
+}
+
+/* ---------- taskbar (Luna blue) ---------- */
+html.xp .w98-taskbar {
+  background: var(--xp-taskbar);
+  border-top: 1px solid #3081fb;
+  box-shadow: none;
+  height: 36px;
+}
+html.xp .w98-start {
+  height: 100%;
+  padding: 0 16px 0 10px;
+  background: var(--xp-start);
+  color: #fff;
+  font: italic bold 14px Tahoma, sans-serif;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+html.xp .w98-start:hover { filter: brightness(1.1); }
+html.xp .w98-start.is-open { filter: brightness(0.9); }
+html.xp .w98-taskbtn {
+  min-width: 150px; max-width: 240px;
+  padding: 3px 12px;
+  background: linear-gradient(to bottom, #3c8dfc 0%, #1f6beb 50%, #0f4db2 100%);
+  border: 1px solid #002d96;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: normal;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+html.xp .w98-taskbtn.active,
+html.xp .w98-taskbtn {
+  align-self: center;
+}
+html.xp .w98-tray {
+  background: var(--xp-tray);
+  border-left: 1px solid #067bbd;
+  padding: 0 12px;
+  color: #fff;
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px;
+  box-shadow: none;
+  align-self: stretch;
+}
+
+/* start menu */
+html.xp .w98-startmenu {
+  position: fixed; left: 2px; bottom: 40px; z-index: 70;
+  width: 230px; padding: 3px;
+  background: var(--xp-panel);
+  border: 2px solid var(--xp-blue);
+  border-radius: 4px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  color: #000;
+}
+html.xp .w98-sm-side {
+  width: 28px;
+  background: var(--xp-titlebar);
+  color: #fff;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 10px 0;
+  font: italic bold 13px Tahoma, sans-serif;
+}
+html.xp .w98-sm-side b { writing-mode: vertical-rl; transform: rotate(180deg); }
+html.xp .w98-sm-items { flex: 1; padding: 4px 0; }
+html.xp .w98-sm-item {
+  display: flex; align-items: center; gap: 9px; padding: 7px 10px;
+  cursor: default; color: #000; text-decoration: none; font-size: 12px;
+  border-radius: 2px;
+}
+html.xp .w98-sm-item:hover { background: var(--xp-select); color: #fff; }
+html.xp .w98-sm-item svg { width: 16px; height: 16px; flex: none; }
+html.xp .w98-sm-sep {
+  height: 0; margin: 4px 8px;
+  border-top: 1px solid var(--xp-panel-line);
+}
+
+/* ---------- scrollbars ---------- */
+html.xp ::-webkit-scrollbar { width: 15px; height: 15px; }
+html.xp ::-webkit-scrollbar-track {
+  background: #f0f0ef;
+  border-left: 1px solid var(--xp-inset);
+}
+html.xp ::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background: linear-gradient(to right, #ffffff 0%, #d6e3f5 45%, #b2c8e8 100%);
+  border: 1px solid var(--xp-inset);
+}
+html.xp * { scrollbar-color: #b2c8e8 #f0f0ef; }
+
+/* ---------- misc ---------- */
+html.xp .pulse-tooltip {
+  border-radius: 3px; background: #ffffe1; color: #000;
+  border: 1px solid var(--xp-inset); box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+  font-size: 12px;
+}
+html.xp .glass-card,
+html.xp .glass-inner,
+html.xp .glass-nav { backdrop-filter: none !important; }
+html.xp #systems-body { --tw-divide-opacity: 0 !important; }

@@ -260,15 +260,25 @@ const { isAdmin = false, bare = false } = Astro.props;
       updateThemeButton();
     }
 
-    // ---- Windows 98 theme toggle (styles/win98.css, html.win98) ----
-    // The choice persists as localStorage("preferred-ui"); the page head
-    // re-applies the class before the first paint, so there is no flash.
-    // Win98 is a light theme through and through: while it is on, the
-    // dark-mode classes are stripped so charts, cards and the palette
-    // inside details panels all take their light branch (win98.css paints
-    // the chrome); turning it off restores the stored theme.
-    function getWin98() {
-      try { return localStorage.getItem('preferred-ui') === 'win98'; } catch (_) { return false; }
+    // ---- Retro theme toggle (styles/win98.css + xp.css) ----
+    // The button cycles default → win98 → xp; the choice persists as
+    // localStorage("preferred-ui") and the page head re-applies the class
+    // before the first paint, so there is no flash. Both retro skins are
+    // light themes: while one is on, the dark-mode classes are stripped so
+    // charts, cards and the palette inside details panels all take their
+    // light branch (each theme's CSS paints the chrome); turning it off
+    // restores the stored theme. The glass wallpaper stays off too — it
+    // fights the retro chrome.
+    const RETRO_ORDER = [null, 'win98', 'xp'];
+    const RETRO_LABELS = {
+      win98: { zh: 'Windows 98 主题（点击切换到 XP）', en: 'Windows 98 theme (click for XP)' },
+      xp: { zh: 'Windows XP 主题（点击回到默认）', en: 'Windows XP theme (click for default)' },
+    };
+    function getRetro() {
+      try {
+        const v = localStorage.getItem('preferred-ui');
+        return v === 'win98' || v === 'xp' ? v : null;
+      } catch (_) { return null; }
     }
     function applyThemeClasses(theme) {
       const html = document.documentElement;
@@ -279,31 +289,36 @@ const { isAdmin = false, bare = false } = Astro.props;
       body.classList.toggle('light', theme !== 'dark');
       html.style.colorScheme = theme;
     }
-    function applyWin98(on) {
-      document.documentElement.classList.toggle('win98', on);
+    function applyRetro(mode) {
+      const html = document.documentElement;
+      html.classList.toggle('win98', mode === 'win98');
+      html.classList.toggle('xp', mode === 'xp');
       const btn = document.getElementById('win98-btn');
-      if (btn) btn.setAttribute('aria-pressed', String(on));
-      // The glass wallpaper fights the retro chrome: it stays off while
-      // Win98 is on, and returns to the admin's choice on exit.
-      const wantsGlass = !!(window.__navbarConfig && window.__navbarConfig.show_glass);
-      document.documentElement.classList.toggle('glass-enabled', !on && wantsGlass);
-      if (on) {
-        applyThemeClasses('light');
-      } else {
-        const preference = getThemePreference();
-        applyThemeClasses(preference === 'system' ? getSystemTheme() : preference);
+      if (btn) {
+        btn.setAttribute('aria-pressed', String(!!mode));
+        const label = mode ? RETRO_LABELS[mode][getCurrentLanguage() === 'zh' ? 'zh' : 'en'] : 'Theme / 主题';
+        btn.setAttribute('title', label);
+        btn.setAttribute('aria-label', label);
       }
+      // The glass wallpaper fights the retro chrome: it stays off while a
+      // retro theme is on, and returns to the admin's choice on exit.
+      const wantsGlass = !!(window.__navbarConfig && window.__navbarConfig.show_glass);
+      html.classList.toggle('glass-enabled', !mode && wantsGlass);
+      applyThemeClasses(mode ? 'light' : (() => {
+        const preference = getThemePreference();
+        return preference === 'system' ? getSystemTheme() : preference;
+      })());
       if (window.__pulseSyncThemeColor) window.__pulseSyncThemeColor();
       // Chart tooltips and the palette follow the themechange event.
       window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: 'light' } }));
     }
-    function toggleWin98() {
-      const on = !getWin98();
+    function cycleRetro() {
+      const next = RETRO_ORDER[(RETRO_ORDER.indexOf(getRetro()) + 1) % RETRO_ORDER.length];
       try {
-        if (on) localStorage.setItem('preferred-ui', 'win98');
+        if (next) localStorage.setItem('preferred-ui', next);
         else localStorage.removeItem('preferred-ui');
       } catch (_) {}
-      applyWin98(on);
+      applyRetro(next);
     }
 
     // Keep the "home" / "admin" navigation link's tooltip + aria-label
@@ -727,12 +742,14 @@ const { isAdmin = false, bare = false } = Astro.props;
         themeBtn.addEventListener('click', toggleTheme);
       }
 
-      // Windows 98 theme: apply the stored choice and wire the toggle.
-      applyWin98(getWin98());
+      // Retro themes: apply the stored choice, wire the cycling button and
+      // expose the applier for the start menu's exit entry.
+      applyRetro(getRetro());
+      window.__pulseApplyRetro = applyRetro;
       const win98Btn = document.getElementById('win98-btn');
       if (win98Btn) {
-        win98Btn.addEventListener('click', toggleWin98);
-        win98Btn.setAttribute('aria-pressed', String(getWin98()));
+        win98Btn.addEventListener('click', cycleRetro);
+        win98Btn.setAttribute('aria-pressed', String(!!getRetro()));
       }
 
       // Initialize tooltip / aria-label text for both buttons on mount
@@ -755,7 +772,7 @@ const { isAdmin = false, bare = false } = Astro.props;
       // but not while the Win98 theme holds the page light.
       if (window.matchMedia) {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-          if (getThemePreference() !== 'system' || getWin98()) return;
+          if (getThemePreference() !== 'system' || getRetro()) return;
           applyTheme(getSystemTheme());
           updateThemeButton();
         });
