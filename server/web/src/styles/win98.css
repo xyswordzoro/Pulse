@@ -112,7 +112,10 @@ html.win98 .w98-menubar {
 html.win98 .w98-menubar span { padding: 2px 9px; cursor: default; }
 html.win98 .w98-menubar span:hover { background: var(--w98-navy); color: #fff; }
 
-/* ---------- navbar strip under the title bar ---------- */
+/* ---------- navbar strip under the title bar ----------
+   Empty under the retro themes (the avatar lives in the title bar, the
+   buttons in the ☰ dropdown) — hidden entirely. */
+html.win98 .glass-nav { display: none !important; }
 html.win98 .glass-nav {
   margin-top: 8px;
   height: 36px !important;
@@ -545,8 +548,12 @@ html.win98 #page-footer { display: none !important; }
 html.win98 .w98-statusbar { margin: 4px auto 0 !important; }
 
 /* The site's avatar + name live in the title bar (moved in by NavBar),
-   replacing the text title; white on the navy gradient. */
-html.win98 .w98-titlebar .w98-t-text,
+   replacing the text title. The empty text span stays as a hidden flex
+   spacer — display:none would collapse it and pull the window buttons
+   left against the avatar. */
+html.win98 .w98-titlebar .w98-t-text {
+  visibility: hidden;
+}
 html.win98 .w98-titlebar .w98-t-ico { display: none !important; }
 html.win98 .w98-titlebar #navbar-home-link {
   display: inline-flex !important;

@@ -59,6 +59,9 @@ html.xp .w98-chrome.w98-startmenu.is-open { display: flex !important; }
 
 /* ---------- title bar (Luna blue) ---------- */
 html.xp .w98-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   height: 30px;
   padding: 0 5px 0 8px;
   background: var(--xp-titlebar);
@@ -430,13 +433,18 @@ html.xp .glass-inner,
 html.xp .glass-nav { backdrop-filter: none !important; }
 html.xp #systems-body { --tw-divide-opacity: 0 !important; }
 
-/* title bar text pushes the button cluster to the right edge */
+/* title bar text pushes the button cluster to the right edge (it is empty
+   once the avatar moves in, but must keep its flex space — visibility
+   hidden, not display:none) */
 html.xp .w98-titlebar .w98-t-text {
   flex: 1;
+  visibility: hidden;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* the empty navbar strip is hidden under the retro themes */
+html.xp .glass-nav { display: none !important; }
 /* the four navbar buttons collapse behind the ☰ dropdown */
 html.xp .w98-titlebar .w98-menu-btn { margin: 0 6px; }
 html.xp .w98-chrome.w98-tb-drop { display: none !important; }
@@ -461,8 +469,9 @@ html.xp .w98-tb-drop #navbar-icons-container > button:hover {
 html.xp #page-footer { display: none !important; }
 
 /* The site's avatar + name live in the title bar under the retro themes
-   (NavBar moves #navbar-home-link in), replacing the text title. */
-html.xp .w98-titlebar .w98-t-text,
+   (NavBar moves #navbar-home-link in), replacing the text title. The
+   empty text span stays as a hidden flex spacer (display:none would pull
+   the window buttons left against the avatar). */
 html.xp .w98-titlebar .w98-t-ico { display: none !important; }
 html.xp .w98-titlebar #navbar-home-link {
   display: inline-flex !important;
