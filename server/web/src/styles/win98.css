@@ -543,6 +543,33 @@ html.win98 .w98-tb-drop #navbar-icons-container > button:hover {
    the window, directly above the taskbar. */
 html.win98 #page-footer { display: none !important; }
 html.win98 .w98-statusbar { margin: 4px auto 0 !important; }
+
+/* The site's avatar + name live in the title bar (moved in by NavBar),
+   replacing the text title; white on the navy gradient. */
+html.win98 .w98-titlebar .w98-t-text,
+html.win98 .w98-titlebar .w98-t-ico { display: none !important; }
+html.win98 .w98-titlebar #navbar-home-link {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+  margin-right: 6px;
+  min-width: 0;
+}
+html.win98 .w98-titlebar #navbar-logo-container,
+html.win98 .w98-titlebar #navbar-logo-container img,
+html.win98 .w98-titlebar #navbar-logo-container svg {
+  width: 16px !important; height: 16px !important;
+  max-width: 16px !important; max-height: 16px !important;
+  object-fit: contain !important;
+  filter: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+html.win98 .w98-titlebar #navbar-logo-container { opacity: 1 !important; }
+html.win98 .w98-titlebar #navbar-text {
+  color: #fff !important;
+  font-size: 12px !important;
+}
 html.win98 .pulse-tooltip {
   border-radius: 0; background: #ffffe1; color: #000;
   border: 1px solid #000; box-shadow: 2px 2px 0 rgba(0,0,0,0.35);

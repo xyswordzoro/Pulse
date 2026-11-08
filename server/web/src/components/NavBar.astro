@@ -325,7 +325,22 @@ const { isAdmin = false, bare = false } = Astro.props;
             lbl.textContent = el.getAttribute('aria-label') || el.getAttribute('title') || '';
           });
         } else if (icons._pulseHome.parent) {
+          // Back to the navbar: the dropdown labels go with it — drop them.
+          icons.querySelectorAll('.pulse-drop-label').forEach((l) => l.remove());
           icons._pulseHome.parent.insertBefore(icons, icons._pulseHome.before);
+        }
+      }
+      // The site's avatar + name move into the title bar, replacing the
+      // text title; back to the navbar in the default theme.
+      const home = document.getElementById('navbar-home-link');
+      if (home) {
+        if (!home._pulseHome) home._pulseHome = { parent: home.parentNode, before: home.nextSibling };
+        const titlebar = document.querySelector('.w98-titlebar');
+        const titleText = document.getElementById('w98-title-text');
+        if (mode && titlebar && titleText) {
+          titlebar.insertBefore(home, titleText);
+        } else if (home._pulseHome.parent) {
+          home._pulseHome.parent.insertBefore(home, home._pulseHome.before);
         }
       }
       // The glass wallpaper fights the retro chrome: it stays off while a

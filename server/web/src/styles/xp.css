@@ -330,6 +330,7 @@ html.xp .w98-statusbar .w98-dot {
 
 /* ---------- taskbar (Luna blue) ---------- */
 html.xp .w98-taskbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
   background: var(--xp-taskbar);
   border-top: 1px solid #3081fb;
   box-shadow: none;
@@ -458,3 +459,31 @@ html.xp .w98-tb-drop #navbar-icons-container > button:hover {
   background: var(--xp-select) !important; color: #fff !important;
 }
 html.xp #page-footer { display: none !important; }
+
+/* The site's avatar + name live in the title bar under the retro themes
+   (NavBar moves #navbar-home-link in), replacing the text title. */
+html.xp .w98-titlebar .w98-t-text,
+html.xp .w98-titlebar .w98-t-ico { display: none !important; }
+html.xp .w98-titlebar #navbar-home-link {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  margin-right: 8px;
+  min-width: 0;
+}
+html.xp .w98-titlebar #navbar-logo-container,
+html.xp .w98-titlebar #navbar-logo-container img,
+html.xp .w98-titlebar #navbar-logo-container svg {
+  width: 20px !important; height: 20px !important;
+  max-width: 20px !important; max-height: 20px !important;
+  object-fit: contain !important;
+  filter: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+html.xp .w98-titlebar #navbar-logo-container { opacity: 1 !important; }
+html.xp .w98-titlebar #navbar-text {
+  color: #fff !important;
+  font-size: 12px !important;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+}
