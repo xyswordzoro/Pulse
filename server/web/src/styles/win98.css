@@ -47,11 +47,13 @@ html.win98 #monitor-root {
 html.win98 .w98-sunken,
 html.win98 .glass-inner {
   background: #fff !important;
-  border: 0 !important;
   border-radius: 0 !important;
-  box-shadow:
-    inset -1px -1px var(--w98-hilite), inset 1px 1px var(--w98-dark),
-    inset -2px -2px var(--w98-light), inset 2px 2px var(--w98-shadow) !important;
+  /* The classic sunken field: dark on the top/left (the light falls from
+     above), white on the bottom/right, plus a 1px black inner edge — the
+     double bevel gives the white surface its depth. */
+  border: 2px solid;
+  border-color: var(--w98-shadow) var(--w98-hilite) var(--w98-hilite) var(--w98-shadow) !important;
+  box-shadow: inset 1px 1px var(--w98-dark), inset -1px -1px var(--w98-light) !important;
 }
 html.win98 .w98-btn {
   display: inline-flex; align-items: center; gap: 4px;
@@ -247,12 +249,14 @@ html.win98 .view-menu-item svg { color: inherit !important; }
 html.win98 .view-menu-label { color: #404040; }
 
 /* ---------- table ---------- */
+/* The header strip holds one raised button per column, as the resizable
+   column headers of the 98 explorer details view. */
 html.win98 #system-table-header-row {
   background: var(--w98-face) !important;
   color: #000 !important;
   border: 0 !important;
-  border-bottom: 2px solid !important;
-  border-color: var(--w98-hilite) var(--w98-shadow) var(--w98-shadow) var(--w98-hilite) !important;
+  gap: 2px !important;
+  padding: 3px 4px !important;
 }
 html.win98 #system-table-header-row .sort-header {
   color: #000 !important; font-weight: normal; gap: 3px;
@@ -261,15 +265,26 @@ html.win98 #system-table-header-row .sort-header:hover { text-decoration: underl
 html.win98 #system-table-header-row .sort-header:focus-visible { outline: 1px dotted #000; box-shadow: none; }
 html.win98 #system-table-header-row .sort-header-arrow { border-color: transparent; }
 
-/* classic list-view gridlines: a vertical separator between the columns
-   (header and rows) and a solid line between the rows — as the reference
-   shot, where every column reads as its own boxed strip */
-html.win98 #system-table-header-row > div,
+/* Each header column is a classic Win98 raised button: white highlight on
+   top/left, dark shadow on right/bottom. Pressing one flips the bevel to
+   the sunken state, as clicking a real header button did. */
+html.win98 #system-table-header-row > div {
+  border: 1px solid;
+  border-color: var(--w98-hilite) var(--w98-shadow) var(--w98-shadow) var(--w98-hilite);
+  background: var(--w98-face);
+  padding: 2px 6px 2px 8px !important;
+}
+html.win98 #system-table-header-row > div:active,
+html.win98 #system-table-header-row > div:has(> .sort-header:active) {
+  border-color: var(--w98-shadow) var(--w98-hilite) var(--w98-hilite) var(--w98-shadow);
+}
+
+/* classic list-view gridlines: a vertical separator between the row
+   columns — the header columns carry their own bevel buttons instead */
 html.win98 #monitor-root:not(.layout-grid) #systems-body .system-row > [data-system-id] > div {
   border-right: 1px solid #b4b4b4;
   padding-left: 8px !important;
 }
-html.win98 #system-table-header-row > div:last-child,
 html.win98 #monitor-root:not(.layout-grid) #systems-body .system-row > [data-system-id] > div:last-child {
   border-right: 0;
 }
