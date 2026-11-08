@@ -300,6 +300,34 @@ const { isAdmin = false, bare = false } = Astro.props;
         btn.setAttribute('title', label);
         btn.setAttribute('aria-label', label);
       }
+      // Under a retro theme the four navbar buttons move into the window
+      // title bar's dropdown (index.astro); moving the live container keeps
+      // every listener. In the default theme they go home to the navbar.
+      const icons = document.getElementById('navbar-icons-container');
+      const dropBody = document.getElementById('w98-tb-drop-body');
+      if (icons) {
+        if (!icons._pulseHome) icons._pulseHome = { parent: icons.parentNode, before: icons.nextSibling };
+        if (mode && dropBody) {
+          dropBody.appendChild(icons);
+          // The navbar buttons are icon-only; in the dropdown each row also
+          // reads its action, from the (already localised) aria-label.
+          Array.from(
+            dropBody.querySelectorAll('#navbar-icons-container > a, #navbar-icons-container > button')
+          ).forEach((el) => {
+            let lbl = el.querySelector('.pulse-drop-label');
+            if (!lbl) {
+              lbl = document.createElement('span');
+              lbl.className = 'pulse-drop-label';
+              lbl.style.marginLeft = '8px';
+              lbl.style.fontSize = '12px';
+              el.appendChild(lbl);
+            }
+            lbl.textContent = el.getAttribute('aria-label') || el.getAttribute('title') || '';
+          });
+        } else if (icons._pulseHome.parent) {
+          icons._pulseHome.parent.insertBefore(icons, icons._pulseHome.before);
+        }
+      }
       // The glass wallpaper fights the retro chrome: it stays off while a
       // retro theme is on, and returns to the admin's choice on exit.
       const wantsGlass = !!(window.__navbarConfig && window.__navbarConfig.show_glass);

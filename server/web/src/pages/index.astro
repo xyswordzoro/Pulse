@@ -382,9 +382,19 @@ const apiBase = import.meta.env.PUBLIC_API_BASE ?? '';
           </svg>
         </span>
         <span class="w98-t-text" id="w98-title-text">Pulse Monitor</span>
+        <button type="button" class="w98-tbtn w98-menu-btn" id="w98-menu-btn" aria-label="Menu" aria-haspopup="true" aria-expanded="false" title="Menu / 菜单">☰</button>
         <button type="button" class="w98-tbtn" tabindex="-1" aria-label="Minimize"><span style="transform:translateY(3px)">_</span></button>
         <button type="button" class="w98-tbtn" tabindex="-1" aria-label="Maximize"><span style="transform:translateY(-1px)">□</span></button>
         <button type="button" class="w98-tbtn" tabindex="-1" aria-label="Close"><span>✕</span></button>
+      </div>
+      <!--
+        The four navbar buttons (language / theme / retro / admin) live in
+        the window title bar under the retro themes, collapsed behind this
+        one button: NavBar's applyRetro moves #navbar-icons-container in
+        here and back. Hidden until .is-open.
+      -->
+      <div class="w98-chrome w98-tb-drop" id="w98-tb-drop">
+        <div id="w98-tb-drop-body"></div>
       </div>
       <div class="w98-chrome w98-menubar" aria-hidden="true">
         <span>文件(F)</span>
@@ -653,6 +663,24 @@ const apiBase = import.meta.env.PUBLIC_API_BASE ?? '';
     }
     const refresh = document.getElementById('w98-sm-refresh');
     if (refresh) refresh.addEventListener('click', () => window.location.reload());
+    // title-bar dropdown for the four navbar buttons
+    const menuBtn = document.getElementById('w98-menu-btn');
+    const tbDrop = document.getElementById('w98-tb-drop');
+    if (menuBtn && tbDrop) {
+      menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = tbDrop.classList.toggle('is-open');
+        menuBtn.classList.toggle('is-open', open);
+        menuBtn.setAttribute('aria-expanded', String(open));
+      });
+      document.addEventListener('click', (e) => {
+        if (!tbDrop.contains(e.target) && e.target !== menuBtn) {
+          tbDrop.classList.remove('is-open');
+          menuBtn.classList.remove('is-open');
+          menuBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
     const classic = document.getElementById('w98-sm-classic');
     if (classic) classic.addEventListener('click', () => {
       // NavBar exposes __pulseApplyRetro(null) once it mounts; until then

@@ -515,6 +515,34 @@ html.win98 ::-webkit-scrollbar-thumb {
 html.win98 * { scrollbar-color: var(--w98-shadow) var(--w98-light); }
 
 /* ---------- misc ---------- */
+/* The four navbar buttons collapse behind the title bar's ☰ dropdown
+   under the retro themes (NavBar moves the container in and out). */
+html.win98 .w98-titlebar .w98-menu-btn { margin: 0 5px; }
+html.win98 .w98-chrome.w98-tb-drop { display: none !important; }
+html.win98 .w98-chrome.w98-tb-drop.is-open { display: block !important; }
+html.win98 .w98-tb-drop {
+  position: fixed; top: 45px; right: 3px; z-index: 80;
+  width: 176px; background: var(--w98-face); padding: 2px;
+  box-shadow:
+    inset -1px -1px var(--w98-dark), inset 1px 1px var(--w98-hilite),
+    inset -2px -2px var(--w98-shadow), inset 2px 2px var(--w98-light),
+    3px 3px 0 rgba(0, 0, 0, 0.35);
+}
+html.win98 .w98-tb-drop #navbar-icons-container { display: block !important; }
+html.win98 .w98-tb-drop #navbar-icons-container > a,
+html.win98 .w98-tb-drop #navbar-icons-container > button {
+  display: flex !important; width: 100% !important; height: 30px !important;
+  border-radius: 0 !important; padding: 0 10px !important;
+  justify-content: flex-start;
+}
+html.win98 .w98-tb-drop #navbar-icons-container > a:hover,
+html.win98 .w98-tb-drop #navbar-icons-container > button:hover {
+  background: var(--w98-navy) !important; color: #fff !important;
+}
+/* The footer line goes away under the retro themes: the status bar closes
+   the window, directly above the taskbar. */
+html.win98 #page-footer { display: none !important; }
+html.win98 .w98-statusbar { margin: 4px auto 0 !important; }
 html.win98 .pulse-tooltip {
   border-radius: 0; background: #ffffe1; color: #000;
   border: 1px solid #000; box-shadow: 2px 2px 0 rgba(0,0,0,0.35);
