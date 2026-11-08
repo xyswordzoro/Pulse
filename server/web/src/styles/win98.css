@@ -261,6 +261,35 @@ html.win98 #system-table-header-row .sort-header:hover { text-decoration: underl
 html.win98 #system-table-header-row .sort-header:focus-visible { outline: 1px dotted #000; box-shadow: none; }
 html.win98 #system-table-header-row .sort-header-arrow { border-color: transparent; }
 
+/* classic list-view gridlines: a vertical separator between the columns
+   (header and rows) and a solid line between the rows — as the reference
+   shot, where every column reads as its own boxed strip */
+html.win98 #system-table-header-row > div,
+html.win98 #monitor-root:not(.layout-grid) #systems-body .system-row > [data-system-id] > div {
+  border-right: 1px solid #b4b4b4;
+  padding-left: 8px !important;
+}
+html.win98 #system-table-header-row > div:last-child,
+html.win98 #monitor-root:not(.layout-grid) #systems-body .system-row > [data-system-id] > div:last-child {
+  border-right: 0;
+}
+html.win98 #systems-body > .system-row > [data-system-id] {
+  border-bottom: 1px solid #c8c8c8 !important;
+}
+
+/* the location cell reads as a little white box around flag + code, as in
+   the reference; empty ('-') cells get the same box */
+html.win98 #monitor-root .cell-location {
+  border: 1px solid var(--w98-shadow);
+  background: #fff;
+  padding: 0 5px !important;
+  height: 18px !important;
+  width: max-content !important;
+  max-width: calc(100% - 6px);
+  overflow: hidden;
+  justify-self: start;
+}
+
 /* rows: white ground, black text; hover #f0f0f0; expanded -> navy */
 html.win98 #systems-body > .system-row > [data-system-id] {
   background: #fff !important;
