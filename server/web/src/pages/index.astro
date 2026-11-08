@@ -231,8 +231,10 @@ const apiBase = import.meta.env.PUBLIC_API_BASE ?? '';
                   }
                 }
               }
-              // Apply glassmorphism effect if enabled
-              if (config.show_glass) {
+              // Apply glassmorphism effect if enabled — but not under the
+              // Win98 theme: its wallpaper and grain would fight the retro
+              // chrome (NavBar re-adds the class when the theme exits).
+              if (config.show_glass && !win98UI) {
                 document.documentElement.classList.add('glass-enabled');
                 if (window.__pulseSyncThemeColor) window.__pulseSyncThemeColor();
               }
@@ -270,9 +272,12 @@ const apiBase = import.meta.env.PUBLIC_API_BASE ?? '';
           
           if (xhr.status === 200) {
             var config = JSON.parse(xhr.responseText);
-            
-            // Apply glassmorphism effect immediately (before render)
-            if (config.show_glass) {
+            var win98Sync = false;
+            try { win98Sync = localStorage.getItem('preferred-ui') === 'win98'; } catch (_) {}
+
+            // Apply glassmorphism effect immediately (before render) — not
+            // under the Win98 theme (see the fetch block above).
+            if (config.show_glass && !win98Sync) {
               document.documentElement.classList.add('glass-enabled');
               if (window.__pulseSyncThemeColor) window.__pulseSyncThemeColor();
             }

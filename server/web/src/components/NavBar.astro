@@ -283,12 +283,17 @@ const { isAdmin = false, bare = false } = Astro.props;
       document.documentElement.classList.toggle('win98', on);
       const btn = document.getElementById('win98-btn');
       if (btn) btn.setAttribute('aria-pressed', String(on));
+      // The glass wallpaper fights the retro chrome: it stays off while
+      // Win98 is on, and returns to the admin's choice on exit.
+      const wantsGlass = !!(window.__navbarConfig && window.__navbarConfig.show_glass);
+      document.documentElement.classList.toggle('glass-enabled', !on && wantsGlass);
       if (on) {
         applyThemeClasses('light');
       } else {
         const preference = getThemePreference();
         applyThemeClasses(preference === 'system' ? getSystemTheme() : preference);
       }
+      if (window.__pulseSyncThemeColor) window.__pulseSyncThemeColor();
       // Chart tooltips and the palette follow the themechange event.
       window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: 'light' } }));
     }
